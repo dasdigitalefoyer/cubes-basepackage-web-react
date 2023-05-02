@@ -1,0 +1,33 @@
+{
+  "name": "@mirevi/puzzlecube-module",
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./services": {
+      "import": "./dist/services.js",
+      "require": "./dist/services.cjs",
+      "types": "./dist/services.d.ts"
+    },
+    "./stores": {
+      "import": "./dist/stores.js",
+      "require": "./dist/stores.cjs",
+      "types": "./dist/stores.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.3",
+    "vite-plugin-dts": "^2.3.0",
+    "zustand": "^4.3.7"
+  }
+}
