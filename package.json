@@ -18,11 +18,8 @@
     }
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
     "clean": "rm -rf dist",
-    "build:tsup": "tsup src/stores.ts src/services.ts --format cjs,esm --dts --clean --minify --legacy-output dist"
+    "build": "tsup"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",
