@@ -4,16 +4,19 @@ import dts from 'vite-plugin-dts'
 
 export default defineConfig({
   build: {
-    emptyOutDir: false,
     outDir: 'dist',
     sourcemap: true,
     lib: {
       entry: {
-        services: resolve(__dirname, 'src/service.ts'),
-        stores: resolve(__dirname, 'src/store.ts'),
+        services: resolve(__dirname, 'src/services.ts'),
+        stores: resolve(__dirname, 'src/stores.ts'),
       },
       formats: ['es', 'cjs'],
     },
   },
-  plugins: [dts()],
+  plugins: [
+    dts({
+      insertTypesEntry: true,
+    }),
+  ],
 })
