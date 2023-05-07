@@ -9,12 +9,12 @@
   "author": "Mirevi",
   "homepage": "https://mirevi.de",
   "license": "MIT",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "main": "dist/pcstoremodule.umd.cjs",
   "module": "dist/pcstoremodule.js",
   "types": "dist/main.d.ts",
-  "exports" : {
+  "exports": {
     ".": {
       "import": "./dist/pcstoremodule.js",
       "require": "./dist/pcstoremodule.umd.cjs"
@@ -23,7 +23,6 @@
   "files": [
     "dist"
   ],
-  
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
