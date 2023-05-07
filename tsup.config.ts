@@ -13,4 +13,5 @@ export default defineConfig({
   minify: true,
   treeshake: true,
   legacyOutput: true,
+  shims: true,
 })
