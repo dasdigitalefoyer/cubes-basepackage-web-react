@@ -35,6 +35,7 @@
     "typescript": "^5.0.4",
     "vite": "^4.3.3",
     "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-externalize-deps": "^0.6.0",
     "zustand": "^4.3.7"
   }
 }
