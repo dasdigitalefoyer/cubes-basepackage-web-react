@@ -1,28 +1,18 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "target": "ES2020",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
+    "module": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-
-    /* Linting */
+    "moduleResolution": "Node",
     "strict": true,
+    "declaration": true,
+    "sourceMap": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["zustand", "mqtt"]
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "src/**/*.test.tsx",
-    "src/**/*.stories.tsx",
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

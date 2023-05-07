@@ -1,30 +1,38 @@
 {
   "name": "@mirevi/puzzlecube-module",
+  "description": "Puzzlecube Store Module",
+  "keywords": [
+    "puzzlecube",
+    "store",
+    "module"
+  ],
+  "author": "Mirevi",
+  "homepage": "https://mirevi.de",
+  "license": "MIT",
   "version": "0.0.7",
   "type": "module",
+  "main": "dist/pcstoremodule.umd.cjs",
+  "module": "dist/pcstoremodule.js",
+  "types": "dist/main.d.ts",
+  "exports" : {
+    ".": {
+      "import": "./dist/pcstoremodule.js",
+      "require": "./dist/pcstoremodule.umd.cjs"
+    }
+  },
   "files": [
     "dist"
   ],
-  "exports": {
-    "./services": {
-      "import": "./dist/esm/services.js",
-      "require": "./dist/services.js",
-      "types": "./dist/services.d.ts"
-    },
-    "./stores": {
-      "import": "./dist/esm/stores.js",
-      "require": "./dist/stores.js",
-      "types": "./dist/stores.d.ts"
-    }
-  },
+  
   "scripts": {
-    "clean": "rm -rf dist",
-    "build": "tsup"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",
     "mqtt": "^4.3.7",
-    "tsup": "^6.7.0",
     "typescript": "^5.0.4",
     "vite": "^4.3.3",
     "vite-plugin-dts": "^2.3.0",
