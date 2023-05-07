@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.16.3",
+    "mqtt": "^4.3.7",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4",
     "vite": "^4.3.3",
