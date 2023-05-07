@@ -7,13 +7,13 @@
   ],
   "exports": {
     "./services": {
-      "import": "./dist/services.js",
-      "require": "./dist/services.cjs",
+      "import": "./dist/esm/services.js",
+      "require": "./dist/services.js",
       "types": "./dist/services.d.ts"
     },
     "./stores": {
-      "import": "./dist/stores.js",
-      "require": "./dist/stores.cjs",
+      "import": "./dist/esm/stores.js",
+      "require": "./dist/stores.js",
       "types": "./dist/stores.d.ts"
     }
   },
