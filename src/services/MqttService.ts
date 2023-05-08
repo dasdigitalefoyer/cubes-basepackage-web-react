@@ -112,13 +112,13 @@ export class MqttService implements IMqttService {
    * Publishes a message to all cubes
    */
   publishToAllCubes(topic: string, message: string): void {
-    throw new Error('Method not implemented.')
+    console.log('publishing to all cubes')
   }
 
   /**
    * Publishes a message to a specific cube using the cubeId
    */
   publishToCube(cubeId: string, topic: string, message: string): void {
-    throw new Error('Method not implemented.')
+    console.log('publishing to cube with id', cubeId)
   }
 }
