@@ -11,7 +11,7 @@
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["zustand", "mqtt"]
+    "types": ["zustand"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
