@@ -120,7 +120,7 @@ export class MqttService implements IMqttService {
         console.log('Adding cube state')
         vanillaCubeStateStore.getState().addCubeState(cubeState)
       }
-      console.log(vanillaCubeStateStore.getState().cubeState)
+      console.log(vanillaCubeStateStore.getState().cubeState.map((cubeState) => console.log(cubeState.id)))
     }
     console.log('MQTT message received: ' + topic + ' ' + message)
   }
