@@ -9,7 +9,7 @@
   "author": "Mirevi",
   "homepage": "https://mirevi.de",
   "license": "MIT",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "type": "module",
   "main": "dist/pcstoremodule.umd.cjs",
   "module": "dist/pcstoremodule.js",
