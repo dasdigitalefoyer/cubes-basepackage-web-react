@@ -1,5 +1,7 @@
 import * as mqtt from 'mqtt'
 import { vanillaMqttStateStore } from '../stores/MqttStateStore'
+import { CubeState } from '../models/CubeState'
+import { vanillaCubeStateStore } from '../stores'
 
 /**
  * Interface for the MQTT service
@@ -46,6 +48,7 @@ export class MqttService implements IMqttService {
   connect(host: string, options: mqtt.IClientOptions): void {
     if (!this.client) {
       this.client = mqtt.connect(host, options)
+      vanillaMqttStateStore.setState({ client: this.client })
       this.client.on('connect', () => {
         this.subscribeOnConnect()
       })
@@ -68,6 +71,7 @@ export class MqttService implements IMqttService {
     if (this.client) {
       this.client.end()
       this.client = null
+      vanillaMqttStateStore.setState({ client: null })
     }
   }
 
@@ -103,27 +107,39 @@ export class MqttService implements IMqttService {
    * from the MQTT broker
    */
   onMessage(topic: string, message: string): void {
-    console.log('MQTT message received', topic, message)
+    if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
+      const cubeId = topic.split('/')[1]
+      const cubeState = JSON.parse(message) as CubeState
+      const exists = vanillaCubeStateStore.getState().cubeState.find((cubeState) => cubeState.id === cubeId)
+      if (exists) {
+        vanillaCubeStateStore.getState().updateCubeState(cubeState)
+      } else {
+        vanillaCubeStateStore.getState().addCubeState(cubeState)
+      }
+    }
+    console.log('MQTT message received: ' + topic + ' ' + message)
   }
 
   /**
    * Method is called after the connection to the MQTT broker is established
    */
   subscribeOnConnect(): void {
-    console.log('MQTT subscribe on connect')
+    if (this.client) {
+      this.client.subscribe('puzzleCubes/+/state')
+    }
   }
 
   /**
    * Publishes a message to all cubes
    */
-  publishToAllCubes(topic: string, message: string): void {
-    console.log('publishing to all cubes')
+  publishToAllCubes(message: string): void {
+    this.publish('puzzleCubes/+/state', message, { qos: 1 })
   }
 
   /**
    * Publishes a message to a specific cube using the cubeId
    */
   publishToCube(cubeId: string, message: string): void {
-    console.log('publishing to cube with id', cubeId)
+    this.publish('puzzleCubes/' + cubeId + '/state', message, { qos: 1 })
   }
 }
