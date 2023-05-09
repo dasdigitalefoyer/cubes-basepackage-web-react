@@ -112,10 +112,13 @@ export class MqttService implements IMqttService {
       const cubeState = JSON.parse(message) as CubeState
       const exists = vanillaCubeStateStore.getState().cubeState.find((cubeState) => cubeState.id === cubeId)
       if (exists) {
+        console.log('Updating cube state')
         vanillaCubeStateStore.getState().updateCubeState(cubeState)
       } else {
+        console.log('Adding cube state')
         vanillaCubeStateStore.getState().addCubeState(cubeState)
       }
+      console.log(vanillaCubeStateStore.getState().cubeState)
     }
     console.log('MQTT message received: ' + topic + ' ' + message)
   }
