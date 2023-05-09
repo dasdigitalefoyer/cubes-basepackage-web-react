@@ -110,8 +110,8 @@ export class MqttService implements IMqttService {
     if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
       const cubeId = topic.split('/')[1]
       const cubeState = JSON.parse(message) as CubeState
-      console.log('Cube state received: ' + cubeId + ' ' + cubeState)
-      const exists = vanillaCubeStateStore.getState().cubeState.find((cubeState) => cubeState.id === cubeId)
+      console.log('Cube state received: ' + cubeId + ' ' + cubeState.id)
+      const exists = vanillaCubeStateStore.getState().cubeState.find((item) => item.id === cubeId)
       console.log('EXISTS: ' + exists)
       if (exists !== undefined) {
         console.log('Updating cube state')
@@ -120,9 +120,9 @@ export class MqttService implements IMqttService {
         console.log('Adding cube state')
         vanillaCubeStateStore.getState().addCubeState(cubeState)
       }
-      console.log(vanillaCubeStateStore.getState().cubeState.map((cubeState) => console.log(cubeState.id)))
+      //console.log(vanillaCubeStateStore.getState().cubeState.map((cubeState) => console.log(cubeState.id)))
     }
-    console.log('MQTT message received: ' + topic + ' ' + message)
+    //console.log('MQTT message received: ' + topic + ' ' + message)
   }
 
   /**
