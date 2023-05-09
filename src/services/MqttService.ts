@@ -110,6 +110,7 @@ export class MqttService implements IMqttService {
     if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
       const cubeId = topic.split('/')[1]
       const cubeState = JSON.parse(message) as CubeState
+      console.log('Cube state received: ' + cubeId + ' ' + cubeState)
       const exists = vanillaCubeStateStore.getState().cubeState.find((cubeState) => cubeState.id === cubeId)
       console.log('EXISTS: ' + exists)
       if (exists !== undefined) {
