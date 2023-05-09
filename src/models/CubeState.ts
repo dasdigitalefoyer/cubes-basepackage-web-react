@@ -16,8 +16,8 @@ export type CubeState = {
 
 export type CubeStateStore = {
   cubeState: CubeState[]
-  addCubeState: (cubeState: CubeState) => void
-  updateCubeState: (cubeState: CubeState) => void
-  removeCubeState: (cubeState: CubeState) => void
+  addCubeState: (cube: CubeState) => void
+  updateCubeState: (cube: CubeState) => void
+  removeCubeState: (cubeId: string) => void
   clearCubeState: () => void
 }
