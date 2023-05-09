@@ -1,4 +1,5 @@
 import * as mqtt from 'mqtt'
+import { vanillaMqttStateStore } from '../stores/MqttStateStore'
 
 /**
  * Interface for the MQTT service
@@ -11,7 +12,7 @@ export interface IMqttService {
   publish(topic: string, message: string, options: mqtt.IClientPublishOptions): void
   onMessage(topic: string, message: string): void
   subscribeOnConnect(): void
-  publishToCube(cubeId: string, topic: string, message: string): void
+  publishToCube(cubeId: string, message: string): void
   publishToAllCubes(topic: string, message: string): void
 }
 
@@ -19,41 +20,45 @@ export interface IMqttService {
  * MQTT service
  */
 export class MqttService implements IMqttService {
-  private client: mqtt.MqttClient | null = null
+  client = vanillaMqttStateStore.getState().client
 
   /**
    * Constructor
    */
   constructor() {
-    this.connect('wss://broker.mirevi.team:9001/mqtt', {
-      clientId: 'cubeFrontend_' + Math.random().toString(16).substr(2, 8),
-      username: 'mirevi',
-      password: 'pastelquail546',
-      clean: false,
-      reconnectPeriod: 1000,
-      connectTimeout: 30000,
-      keepalive: 60,
-      resubscribe: true,
-    })
+    if (!this.client) {
+      this.connect('wss://broker.mirevi.team:9001/mqtt', {
+        clientId: 'cubeFrontend_' + Math.random().toString(16).substr(2, 8),
+        username: 'mirevi',
+        password: 'pastelquail546',
+        clean: false,
+        reconnectPeriod: 1000,
+        connectTimeout: 30000,
+        keepalive: 60,
+        resubscribe: true,
+      })
+    }
   }
 
   /**
    * Connects to the MQTT broker
    */
   connect(host: string, options: mqtt.IClientOptions): void {
-    this.client = mqtt.connect(host, options)
-    this.client.on('connect', () => {
-      this.subscribeOnConnect()
-    })
-    this.client.on('reconnect', () => {
-      console.log('MQTT client reconnecting')
-    })
-    this.client.on('close', () => {
-      console.log('MQTT client disconnected')
-    })
-    this.client.on('message', (topic, message) => {
-      this.onMessage(topic, message.toString())
-    })
+    if (!this.client) {
+      this.client = mqtt.connect(host, options)
+      this.client.on('connect', () => {
+        this.subscribeOnConnect()
+      })
+      this.client.on('reconnect', () => {
+        console.log('MQTT client reconnecting')
+      })
+      this.client.on('close', () => {
+        console.log('MQTT client disconnected')
+      })
+      this.client.on('message', (topic, message) => {
+        this.onMessage(topic, message.toString())
+      })
+    }
   }
 
   /**
@@ -118,7 +123,7 @@ export class MqttService implements IMqttService {
   /**
    * Publishes a message to a specific cube using the cubeId
    */
-  publishToCube(cubeId: string, topic: string, message: string): void {
+  publishToCube(cubeId: string, message: string): void {
     console.log('publishing to cube with id', cubeId)
   }
 }
