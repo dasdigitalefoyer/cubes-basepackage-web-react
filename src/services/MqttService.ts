@@ -1,33 +1,18 @@
 import * as mqtt from 'mqtt'
-import { vanillaMqttStateStore } from '../stores/MqttStateStore'
 import { CubeState } from '../models/CubeState'
-import { vanillaCubeStateStore } from '../stores'
-
-/**
- * Interface for the MQTT service
- */
-export interface IMqttService {
-  connect(host: string, options: mqtt.IClientOptions): void
-  disconnect(): void
-  subscribe(topic: string): void
-  unsubscribe(topic: string): void
-  publish(topic: string, message: string, options: mqtt.IClientPublishOptions): void
-  onMessage(topic: string, message: string): void
-  subscribeOnConnect(): void
-  publishToCube(cubeId: string, message: string): void
-  publishToAllCubes(topic: string, message: string): void
-}
+import { vanillaCubeStateStore, vanillaMqttStateStore } from '../stores'
 
 /**
  * MQTT service
  */
-export class MqttService implements IMqttService {
-  client = vanillaMqttStateStore.getState().client
+export class MqttService {
+  private static instance: MqttService
+  private client = vanillaMqttStateStore.getState().client
 
   /**
    * Constructor
    */
-  constructor() {
+  private constructor() {
     if (!this.client) {
       this.connect('wss://broker.mirevi.team:9001/mqtt', {
         clientId: 'cubeFrontend_' + Math.random().toString(16).substr(2, 8),
@@ -42,10 +27,18 @@ export class MqttService implements IMqttService {
     }
   }
 
+  public static getInstance(): MqttService {
+    if (!MqttService.instance) {
+      MqttService.instance = new MqttService()
+    }
+
+    return MqttService.instance
+  }
+
   /**
    * Connects to the MQTT broker
    */
-  connect(host: string, options: mqtt.IClientOptions): void {
+  public connect(host: string, options: mqtt.IClientOptions): void {
     if (!this.client) {
       this.client = mqtt.connect(host, options)
       vanillaMqttStateStore.setState({ client: this.client })
@@ -67,7 +60,7 @@ export class MqttService implements IMqttService {
   /**
    * Disconnects from the MQTT broker
    */
-  disconnect(): void {
+  public disconnect(): void {
     if (this.client) {
       this.client.end()
       this.client = null
@@ -78,7 +71,7 @@ export class MqttService implements IMqttService {
   /**
    * Subscribes to a topic
    */
-  subscribe(topic: string): void {
+  public subscribe(topic: string): void {
     if (this.client) {
       this.client.subscribe(topic)
     }
@@ -87,7 +80,7 @@ export class MqttService implements IMqttService {
   /**
    * Unsubscribes from a topic
    */
-  unsubscribe(topic: string): void {
+  public unsubscribe(topic: string): void {
     if (this.client) {
       this.client.unsubscribe(topic)
     }
@@ -96,7 +89,7 @@ export class MqttService implements IMqttService {
   /**
    * Publishes a message to a topic
    */
-  publish(topic: string, message: string, options: mqtt.IClientPublishOptions): void {
+  public publish(topic: string, message: string, options: mqtt.IClientPublishOptions): void {
     if (this.client) {
       this.client.publish(topic, message, options)
     }
@@ -106,7 +99,7 @@ export class MqttService implements IMqttService {
    * Method is called when a message is received
    * from the MQTT broker
    */
-  onMessage(topic: string, message: string): void {
+  private onMessage(topic: string, message: string): void {
     if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
       const cubeId = topic.split('/')[1]
       const cubeState = JSON.parse(message) as CubeState
@@ -124,7 +117,7 @@ export class MqttService implements IMqttService {
   /**
    * Method is called after the connection to the MQTT broker is established
    */
-  subscribeOnConnect(): void {
+  private subscribeOnConnect(): void {
     if (this.client) {
       this.client.subscribe('puzzleCubes/+/state')
     }
@@ -133,14 +126,14 @@ export class MqttService implements IMqttService {
   /**
    * Publishes a message to all cubes
    */
-  publishToAllCubes(message: string): void {
+  public publishToAllCubes(message: string): void {
     this.publish('puzzleCubes/+/state', message, { qos: 1 })
   }
 
   /**
    * Publishes a message to a specific cube using the cubeId
    */
-  publishToCube(cubeId: string, message: string): void {
+  public publishToCube(cubeId: string, message: string): void {
     this.publish('puzzleCubes/' + cubeId + '/state', message, { qos: 1 })
   }
 }
