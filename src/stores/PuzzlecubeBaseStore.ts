@@ -8,6 +8,7 @@ const mqttService = MqttService.getInstance()
 export type BaseStore = {
   cubeState: CubeStateModel[]
   subscribeOnConnect: () => void
+  publish: (topic: string, message: string, options: any) => void
   addCubeState: (cube: CubeStateModel) => void
   updateCubeState: (cube: CubeStateModel) => void
   removeCubeState: (cubeId: string) => void
@@ -19,6 +20,9 @@ export const vanillaPuzzlecubeBaseStore = createStore<BaseStore>()(
     cubeState: [],
     subscribeOnConnect: () => {
       mqttService.subscribe('puzzleCubes/+/state')
+    },
+    publish: (topic: string, message: string, options: any) => {
+      mqttService.publish(topic, message, options)
     },
     addCubeState: (item) => {
       set((state) => ({
