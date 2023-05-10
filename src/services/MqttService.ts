@@ -1,6 +1,17 @@
 import * as mqtt from 'mqtt'
-import { CubeState } from '../models/CubeState'
-import { vanillaCubeStateStore } from '../stores'
+//import { vanillaCubeStateStore } from '../stores'
+
+const host: string = 'wss://broker.mirevi.team:9001/mqtt'
+const options: mqtt.IClientOptions = {
+  clientId: 'cubeFrontend',
+  username: 'mirevi',
+  password: 'pastelquail546',
+  clean: false,
+  reconnectPeriod: 1000,
+  connectTimeout: 30000,
+  keepalive: 60,
+  resubscribe: true,
+}
 
 /**
  * MQTT service
@@ -15,16 +26,7 @@ export class MqttService {
   private constructor() {
     console.log('[MqttService] Initializing MQTT service')
     if (!this.client) {
-      this.connect('wss://broker.mirevi.team:9001/mqtt', {
-        clientId: 'cubeFrontend_' + Math.random().toString(16).substr(2, 8),
-        username: 'mirevi',
-        password: 'pastelquail546',
-        clean: false,
-        reconnectPeriod: 1000,
-        connectTimeout: 30000,
-        keepalive: 60,
-        resubscribe: true,
-      })
+      this.connect(host, options)
     }
   }
 
@@ -106,19 +108,19 @@ export class MqttService {
    * from the MQTT broker
    */
   private onMessage(topic: string, message: string): void {
-    console.log('[onMessage] Received message from topic: ' + topic)
-    if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
-      const cubeId = topic.split('/')[1]
-      const cubeState = JSON.parse(message) as CubeState
-      const exists = vanillaCubeStateStore.getState().cubeState.find((item) => item.id === cubeId)
-      if (exists) {
-        console.log('Updating cube state')
-        vanillaCubeStateStore.getState().updateCubeState(cubeState)
-      } else {
-        console.log('Adding cube state')
-        vanillaCubeStateStore.getState().addCubeState(cubeState)
-      }
-    }
+    console.log('[onMessage] Received message from topic: ' + topic + ' with message: ' + message)
+    // if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
+    //   const cubeId = topic.split('/')[1]
+    //   const cubeState = JSON.parse(message) as CubeState
+    //   const exists = vanillaCubeStateStore.getState().cubeState.find((item) => item.id === cubeId)
+    //   if (exists) {
+    //     console.log('Updating cube state')
+    //     vanillaCubeStateStore.getState().updateCubeState(cubeState)
+    //   } else {
+    //     console.log('Adding cube state')
+    //     vanillaCubeStateStore.getState().addCubeState(cubeState)
+    //   }
+    // }
   }
 
   /**
@@ -136,7 +138,9 @@ export class MqttService {
    */
   public publishToAllCubes(message: string): void {
     console.log('[publishToAllCubes] Publishing message to all cubes')
-    this.publish('puzzleCubes/+/state', message, { qos: 1 })
+    //vanillaCubeStateStore.getState().cubeState.forEach((cube) => {
+    //  this.publishToCube(cube.id, message)
+    //})
   }
 
   /**

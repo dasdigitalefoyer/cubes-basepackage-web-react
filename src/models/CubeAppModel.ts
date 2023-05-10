@@ -8,7 +8,7 @@ export enum AppCategory {
   ADMIN = 'ADMIN',
 }
 
-export type CubeApp = {
+export type CubeAppModel = {
   timestamp: Date
   meta: {
     version: string

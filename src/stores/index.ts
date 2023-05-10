@@ -1,2 +1,1 @@
-export { vanillaMqttStateStore } from './MqttStateStore'
-export { vanillaCubeStateStore } from './CubeStateStore'
+export { vanillaPuzzlecubeBaseStore } from './PuzzlecubeBaseStore'
