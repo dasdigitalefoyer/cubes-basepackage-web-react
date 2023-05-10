@@ -1,10 +1,25 @@
 import { createStore } from 'zustand/vanilla'
 import { devtools } from 'zustand/middleware'
-import { CubeStateStore } from '../models/CubeState'
+import { CubeStateModel } from '../models/CubeStateModel'
+import { MqttService } from '../services'
 
-export const vanillaCubeStateStore = createStore<CubeStateStore>()(
+const mqttService = MqttService.getInstance()
+
+export type BaseStore = {
+  cubeState: CubeStateModel[]
+  subscribeOnConnect: () => void
+  addCubeState: (cube: CubeStateModel) => void
+  updateCubeState: (cube: CubeStateModel) => void
+  removeCubeState: (cubeId: string) => void
+  clearCubeState: () => void
+}
+
+export const vanillaPuzzlecubeBaseStore = createStore<BaseStore>()(
   devtools((set) => ({
     cubeState: [],
+    subscribeOnConnect: () => {
+      mqttService.subscribe('puzzleCubes/+/state')
+    },
     addCubeState: (item) => {
       set((state) => ({
         cubeState: [...state.cubeState, item],
