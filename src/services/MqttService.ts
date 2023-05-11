@@ -40,7 +40,7 @@ export class MqttService {
   /**
    * Connects to the MQTT broker
    */
-  public connect(host: string, options: mqtt.IClientOptions): void {
+  public connect(): void {
     if (!this.client) {
       console.log('[connect] Connecting to MQTT broker')
       this.client = mqtt.connect(host, options)
