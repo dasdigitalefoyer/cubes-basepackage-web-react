@@ -2,6 +2,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   build: {
@@ -11,5 +12,5 @@ export default defineConfig({
       fileName: 'pcstoremodule',
     },
   },
-  plugins: [dts(), nodePolyfills()],
+  plugins: [dts(), nodePolyfills(), react()],
 })
