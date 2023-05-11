@@ -4,7 +4,7 @@ const host: string = 'wss://broker.mirevi.team:9001/mqtt'
 const options: mqtt.IClientOptions = {
   clientId: 'cubeFrontend',
   username: 'mirevi',
-  password: 'pastelqauil546',
+  password: 'pastelquail546',
   clean: false,
   reconnectPeriod: 1000,
   connectTimeout: 30000,
