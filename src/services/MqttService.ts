@@ -24,9 +24,9 @@ export class MqttService {
    */
   private constructor() {
     console.log('[MqttService] Initializing MQTT service')
-    //if (!this.client) {
-    //  this.connect(host, options)
-    //}
+    if (!this.client) {
+      this.connect(host, options)
+    }
   }
 
   public static getInstance(): MqttService {
@@ -40,11 +40,10 @@ export class MqttService {
   /**
    * Connects to the MQTT broker
    */
-  public connect(): void {
+  public connect(host: string, options: mqtt.IClientOptions): void {
     if (!this.client) {
       console.log('[connect] Connecting to MQTT broker')
       this.client = mqtt.connect(host, options)
-      //vanillaMqttStateStore.setState({ client: this.client })
       this.client.on('connect', () => {
         console.log('MQTT client connected')
       })
