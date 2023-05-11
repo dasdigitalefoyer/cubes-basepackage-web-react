@@ -45,5 +45,11 @@
     "vite-plugin-dts": "^2.3.0",
     "vite-plugin-node-polyfills": "^0.8.2",
     "zustand": "^4.3.8"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "mqtt": "^4.3.7",
+    "zustand": "^4.3.8"
   }
 }
