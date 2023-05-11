@@ -37,6 +37,10 @@ export class MqttService {
     return MqttService.instance
   }
 
+  public getClient(): mqtt.MqttClient | null {
+    return this.client
+  }
+
   /**
    * Connects to the MQTT broker
    */
@@ -53,9 +57,9 @@ export class MqttService {
       this.client.on('close', () => {
         console.log('MQTT client disconnected')
       })
-      this.client.on('message', (topic, message) => {
-        this.onMessage(topic, message.toString())
-      })
+      // this.client.on('message', (topic, message) => {
+      //   this.onMessage(topic, message.toString())
+      // })
     }
   }
 
@@ -98,13 +102,5 @@ export class MqttService {
       console.log('[publish] Publishing to topic: ' + topic)
       this.client.publish(topic, message, options)
     }
-  }
-
-  /**
-   * Method is called when a message is received
-   * from the MQTT broker
-   */
-  private onMessage(topic: string, message: string): void {
-    console.log('[onMessage] Received message from topic: ' + topic + ' with message: ' + message)
   }
 }
