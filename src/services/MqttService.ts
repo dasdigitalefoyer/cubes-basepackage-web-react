@@ -24,9 +24,9 @@ export class MqttService {
    */
   private constructor() {
     console.log('[MqttService] Initializing MQTT service')
-    if (!this.client) {
-      this.connect(host, options)
-    }
+    //if (!this.client) {
+    //  this.connect(host, options)
+    //}
   }
 
   public static getInstance(): MqttService {
