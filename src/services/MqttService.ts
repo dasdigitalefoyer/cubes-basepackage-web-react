@@ -1,11 +1,10 @@
 import * as mqtt from 'mqtt'
-//import { vanillaCubeStateStore } from '../stores'
 
 const host: string = 'wss://broker.mirevi.team:9001/mqtt'
 const options: mqtt.IClientOptions = {
   clientId: 'cubeFrontend',
   username: 'mirevi',
-  password: 'pastelquail546',
+  password: 'pastelqauil546',
   clean: false,
   reconnectPeriod: 1000,
   connectTimeout: 30000,
@@ -47,7 +46,7 @@ export class MqttService {
       this.client = mqtt.connect(host, options)
       //vanillaMqttStateStore.setState({ client: this.client })
       this.client.on('connect', () => {
-        this.subscribeOnConnect()
+        console.log('MQTT client connected')
       })
       this.client.on('reconnect', () => {
         console.log('MQTT client reconnecting')
@@ -69,7 +68,6 @@ export class MqttService {
       console.log('[disconnect] Disconnecting from MQTT broker')
       this.client.end()
       this.client = null
-      //vanillaMqttStateStore.setState({ client: null })
     }
   }
 
@@ -109,45 +107,5 @@ export class MqttService {
    */
   private onMessage(topic: string, message: string): void {
     console.log('[onMessage] Received message from topic: ' + topic + ' with message: ' + message)
-    // if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
-    //   const cubeId = topic.split('/')[1]
-    //   const cubeState = JSON.parse(message) as CubeState
-    //   const exists = vanillaCubeStateStore.getState().cubeState.find((item) => item.id === cubeId)
-    //   if (exists) {
-    //     console.log('Updating cube state')
-    //     vanillaCubeStateStore.getState().updateCubeState(cubeState)
-    //   } else {
-    //     console.log('Adding cube state')
-    //     vanillaCubeStateStore.getState().addCubeState(cubeState)
-    //   }
-    // }
-  }
-
-  /**
-   * Method is called after the connection to the MQTT broker is established
-   */
-  private subscribeOnConnect(): void {
-    console.log('[subscribeOnConnect] Subscribing to topics')
-    if (this.client) {
-      this.client.subscribe('puzzleCubes/+/state')
-    }
-  }
-
-  /**
-   * Publishes a message to all cubes
-   */
-  public publishToAllCubes(message: string): void {
-    console.log('[publishToAllCubes] Publishing message to all cubes')
-    //vanillaCubeStateStore.getState().cubeState.forEach((cube) => {
-    //  this.publishToCube(cube.id, message)
-    //})
-  }
-
-  /**
-   * Publishes a message to a specific cube using the cubeId
-   */
-  public publishToCube(cubeId: string, message: string): void {
-    console.log('[publishToCube] Publishing message to cube: ' + cubeId)
-    this.publish('puzzleCubes/' + cubeId + '/state', message, { qos: 1 })
   }
 }
