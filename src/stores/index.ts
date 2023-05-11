@@ -1,1 +1,1 @@
-export { vanillaPuzzlecubeBaseStore } from './PuzzlecubeBaseStore'
+export { puzzleCubeBaseStore } from './PuzzlecubeBaseStore'
