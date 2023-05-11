@@ -6,12 +6,13 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "moduleResolution": "Node",
     "strict": true,
+    "jsx": "react-jsx",
     "declaration": true,
     "sourceMap": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["zustand"]
+    "types": ["react", "react-dom", "zustand"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
