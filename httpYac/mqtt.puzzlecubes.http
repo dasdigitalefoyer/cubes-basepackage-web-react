@@ -17,7 +17,7 @@ password: pastelquail546
     "version": "0.1"
   },
   "id": "{{cubeId}}",
-  "state": "inactive",
+  "state": "active",
   "system": {
     "ip": "172.16.10.10",
     "mac": "XX-XX-XX-XX-XX-XX",

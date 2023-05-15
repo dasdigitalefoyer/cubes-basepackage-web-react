@@ -37,6 +37,7 @@ const Connector = ({ brokerUrl, options = { keepalive: 0 } }: ConnectorProps) =>
       mqttClient.on('message', (topic, message) => {
         if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
           const cubeId = topic.split('/')[1]
+          if (cubeId === 'app') return
           const cubeState = JSON.parse(message.toString())
           const exists = existsCubeState(cubeId)
 
