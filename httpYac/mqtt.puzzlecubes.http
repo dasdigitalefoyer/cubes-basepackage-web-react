@@ -1,23 +1,23 @@
 // PUZZLECUBES MQTT API
 
-
-@broker=192.168.111.1:1883
-@cubeId=testCube
-
+@broker=172.16.10.24:1883
+@cubeId=cube03
 
 ////////////////////////////////////////////////////////////////////
 ### CUBE STATE - hardware and backend state
 ////////////////////////////////////////////////////////////////////
 MQTT tcp://{{broker}}
 Topic: puzzleCubes/{{cubeId}}/state
+username: miniwelt
+password: pastelquail546
 
 {
   "timestamp": "2023-03-22T10:47:08.867081",
   "meta": {
     "version": "0.1"
   },
-  "id": "cube01",
-  "state": "UNINITIALIZED",
+  "id": "{{cubeId}}",
+  "state": "inactive",
   "system": {
     "ip": "172.16.10.10",
     "mac": "XX-XX-XX-XX-XX-XX",
