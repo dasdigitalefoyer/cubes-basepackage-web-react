@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react'
 import * as mqtt from 'mqtt'
 import { ConnectorProps } from '../types'
-import { useMqttStore, useCubeStateStore } from '../stores'
+import { useMqttStore } from '../stores'
 
 const Connector = ({ brokerUrl, options = { keepalive: 0 } }: ConnectorProps) => {
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus } = useMqttStore()
-  const { addCubeState, updateCubeState, existsCubeState } = useCubeStateStore()
 
   // Connect to the broker when the component mounts
   useEffect(() => {
@@ -33,24 +32,6 @@ const Connector = ({ brokerUrl, options = { keepalive: 0 } }: ConnectorProps) =>
       mqttClient.on('error', (error) => {
         console.log('error', error)
         setConnectionStatus(error.message)
-      })
-      mqttClient.on('message', (topic, message) => {
-        if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
-          const cubeId = topic.split('/')[1]
-          if (cubeId === 'app') return
-          const cubeState = JSON.parse(message.toString())
-          const exists = existsCubeState(cubeId)
-
-          console.log(exists)
-
-          if (exists) {
-            console.log('updating cube state')
-            updateCubeState(cubeState)
-          } else {
-            console.log('adding cube state')
-            addCubeState(cubeState)
-          }
-        }
       })
     }
   }, ['client', 'clientValid', 'brokerUrl', 'options'])
