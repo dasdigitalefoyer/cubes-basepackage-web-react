@@ -16,8 +16,6 @@ const Connector = ({ brokerUrl, options = { keepalive: 0 } }: ConnectorProps) =>
       setClient(mqttClient)
       mqttClient.on('connect', () => {
         setConnectionStatus('connected')
-        setClient(mqttClient)
-        mqttClient.subscribe('puzzleCubes/+/state')
       })
       mqttClient.on('reconnect', () => {
         setConnectionStatus('reconnecting')
