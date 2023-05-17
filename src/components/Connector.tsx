@@ -5,15 +5,17 @@ import { useMqttStore } from '../stores'
 
 const Connector = ({ brokerUrl, options = { keepalive: 0 } }: ConnectorProps) => {
   const clientValid = useRef(false)
-  const { client, setClient, setConnectionStatus } = useMqttStore()
+  const { client, setClient, setConnectionStatus, setError } = useMqttStore()
 
   // Connect to the broker when the component mounts
   useEffect(() => {
     if (!client && !clientValid.current) {
       clientValid.current = true
       setConnectionStatus('connecting')
+
       const mqttClient = mqtt.connect(brokerUrl, options)
       setClient(mqttClient)
+
       mqttClient.on('connect', () => {
         setConnectionStatus('connected')
       })
@@ -21,15 +23,11 @@ const Connector = ({ brokerUrl, options = { keepalive: 0 } }: ConnectorProps) =>
         setConnectionStatus('reconnecting')
       })
       mqttClient.on('error', (err) => {
-        console.log(`Connection error: ${err}`)
-        setConnectionStatus(err.message)
+        setConnectionStatus('error')
+        setError(err)
       })
       mqttClient.on('close', () => {
         setConnectionStatus('disconnected')
-      })
-      mqttClient.on('error', (error) => {
-        console.log('error', error)
-        setConnectionStatus(error.message)
       })
     }
   }, ['client', 'clientValid', 'brokerUrl', 'options'])
