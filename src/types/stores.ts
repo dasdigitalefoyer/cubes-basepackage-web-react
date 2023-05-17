@@ -1,14 +1,17 @@
 import * as mqtt from 'mqtt'
 import { CubeAppState, CubeState } from './cubes'
+import { Error } from './mqtt'
 
 /**
  * MqttStore
  */
 export type MqttStore = {
   client: mqtt.MqttClient | null
-  connectionStatus: string | Error
+  connectionStatus: string
+  error: Error | null
   setClient: (client: mqtt.MqttClient | null) => void
-  setConnectionStatus: (status: string | Error) => void
+  setConnectionStatus: (status: string) => void
+  setError: (error: Error | null) => void
 }
 
 /**
