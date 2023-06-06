@@ -15,13 +15,14 @@
   "files": [
     "dist"
   ],
-  "main": "dist/puzzlecube-core.umd.js",
-  "module": "dist/puzzlecube-core.es.js",
-  "types": "dist/puzzlecube-core.d.ts",
+  "main": "./dist/puzzlecube-core.umd.js",
+  "module": "./dist/puzzlecube-core.es.js",
+  "types": "./dist/puzzlecube-core.d.ts",
   "exports": {
     ".": {
       "import": "./dist/puzzlecube-core.es.js",
-      "require": "./dist/puzzlecube-core.umd.js"
+      "require": "./dist/puzzlecube-core.umd.js",
+      "types": "./dist/puzzlecube-core.d.ts"
     }
   },
   "scripts": {
@@ -40,7 +41,7 @@
     "@vitejs/plugin-react": "^4.0.0",
     "mqtt": "^4.3.7",
     "typescript": "^5.0.4",
-    "vite": "^4.3.5",
+    "vite": "^4.3.9",
     "vite-plugin-dts": "^2.3.0",
     "vite-plugin-node-polyfills": "^0.8.2",
     "zustand": "^4.3.8"
