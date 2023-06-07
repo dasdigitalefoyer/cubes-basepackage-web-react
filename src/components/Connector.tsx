@@ -3,7 +3,7 @@ import * as mqtt from 'mqtt'
 import { ConnectorProps } from '../types'
 import { useMqttStore } from '../stores'
 
-const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = { keepalive: 0 } }: ConnectorProps) => {
+const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: ConnectorProps) => {
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
 
