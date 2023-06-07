@@ -1,8 +1,9 @@
 import { create } from 'zustand'
-import { CubeStateStore } from '../types'
+import { StateStore } from '../types'
 
-const useCubeStateStore = create<CubeStateStore>((set, get) => ({
+const useStateStore = create<StateStore>((set, get) => ({
   cubeState: [],
+  appState: null,
   addCubeState: (cubeState) => set((state) => ({ cubeState: [...state.cubeState, cubeState] })),
   updateCubeState: (cubeState) =>
     set((state) => ({ cubeState: state.cubeState.map((state) => (state.id === cubeState.id ? cubeState : state)) })),
@@ -13,7 +14,8 @@ const useCubeStateStore = create<CubeStateStore>((set, get) => ({
   existsCubeState: (cubeId) => {
     const { cubeState } = get()
     return cubeState.some((state) => state.id === cubeId)
-  }
+  },
+  setAppState: (appState) => set(() => ({ appState }))
 }))
 
-export default useCubeStateStore
+export default useStateStore
