@@ -14,8 +14,8 @@ export type Message = {
 }
 
 export type ConnectorProps = {
-  brokerUrl: string
-  options: IClientOptions
+  brokerUrl?: string
+  options?: IClientOptions
 }
 
 export type UseSubscriptionProps = {
