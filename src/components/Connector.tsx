@@ -36,7 +36,7 @@ const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: Conn
       })
       // write cube state or app state to the store
       mqttClient.on('message', (topic, message) => {
-        console.log(topic, message.toString())
+        //console.log(topic, message.toString())
         const state = JSON.parse(message.toString())
         if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
           const cubeId = topic.split('/')[1]
