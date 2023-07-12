@@ -1,7 +1,7 @@
 // PUZZLECUBES MQTT API
 
-@broker=172.16.10.24:1883
-@cubeId=cube03
+@broker=localhost:1883
+@cubeId=cube02
 
 ////////////////////////////////////////////////////////////////////
 ### CUBE STATE - hardware and backend state
