@@ -18,12 +18,17 @@ export type MqttStore = {
 /**
  * StateStore
  */
-export type StateStore = {
+export type StateStore<T> = {
   cubeState: CubeState[]
   addCubeState: (cubeState: CubeState) => void
   updateCubeState: (cubeState: CubeState) => void
   findCubeState: (id: string) => CubeState | undefined
   existsCubeState: (id: string) => boolean
-  appState: AppState | null
-  setAppState: (cubeApp: AppState) => void
+  appState: T[]
+  addAppState: (appState: T) => void
+  updateAppState: (appState: T) => void
+  findAppState: (id: string) => T | undefined
+  existsAppState: (id: string) => boolean
+  runningApp: AppState | null
+  setRunningApp: (cubeApp: AppState) => void
 }
