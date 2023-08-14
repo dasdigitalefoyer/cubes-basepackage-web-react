@@ -1,14 +1,17 @@
 import { useEffect, useRef } from 'react'
 import * as mqtt from 'mqtt'
-import { ConnectorProps } from '../types'
 import { useMqttStore, useStateStore } from '../stores'
+
+type ConnectorProps = {
+  brokerUrl?: string
+  options?: mqtt.IClientOptions
+}
 
 const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: ConnectorProps) => {
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
   const { addCubeState, updateCubeState, existsCubeState } = useStateStore()
 
-  // Connect to the broker when the component mounts
   useEffect(() => {
     if (!client && !clientValid.current) {
       clientValid.current = true
@@ -17,12 +20,9 @@ const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: Conn
       const mqttClient = mqtt.connect(brokerUrl, options)
       setClient(mqttClient)
 
-      // subscribe to all puzzleCubes state topics
       mqttClient.on('connect', () => {
         setConnectionStatus('connected')
         mqttClient.subscribe('puzzleCubes/+/state')
-        // TODO: wie lautet der topic für die app state?
-        //mqttClient.subscribe('puzzleCubes/+/app/state')
       })
       mqttClient.on('reconnect', () => {
         setConnectionStatus('reconnecting')
@@ -40,7 +40,6 @@ const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: Conn
         const state = JSON.parse(message.toString())
         if (topic.startsWith('puzzleCubes/') && topic.endsWith('/state')) {
           const cubeId = topic.split('/')[1]
-
           const isApp = topic.split('/')[2] === 'app'
           if (isApp) return
 
@@ -60,7 +59,6 @@ const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: Conn
   useEffect(
     () => () => {
       if (client) {
-        console.log('[unmount] closing mqtt client')
         client.end(true)
         setClient(null)
         clientValid.current = false
