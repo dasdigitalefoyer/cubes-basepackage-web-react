@@ -16,7 +16,7 @@ type MqttStore = {
   setError: (error: Error | null) => void
 }
 
-const useMqttStore = create<MqttStore>((set) => ({
+export const useMqttStore = create<MqttStore>((set) => ({
   client: null,
   connectionStatus: 'offline',
   error: null,
@@ -24,5 +24,3 @@ const useMqttStore = create<MqttStore>((set) => ({
   setConnectionStatus: (connectionStatus) => set(() => ({ connectionStatus })),
   setError: (error) => set(() => ({ error }))
 }))
-
-export default useMqttStore
