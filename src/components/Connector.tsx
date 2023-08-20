@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as mqtt from 'mqtt'
 import { useMqttStore, useStateStore } from '../stores'
+import { useInterval } from 'usehooks-ts'
 
 type ConnectorProps = {
   brokerUrl?: string
@@ -10,7 +11,16 @@ type ConnectorProps = {
 const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: ConnectorProps) => {
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
-  const { addCubeState, updateCubeState, existsCubeState } = useStateStore()
+  const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useStateStore()
+
+  // TODO: THAT IS POSSILBY NOT IMPLEMENTED ON SERVER SIDE ( WE NEED TIMESTAMP ON SERVER SIDE )
+  useInterval(() => {
+    cubeState.forEach((cube) => {
+      if (cube.timestamp < new Date(Date.now() - 10000).toISOString()) {
+        removeCubeState(cube.id)
+      }
+    })
+  }, 1000)
 
   useEffect(() => {
     if (!client && !clientValid.current) {
@@ -33,6 +43,9 @@ const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: Conn
       })
       mqttClient.on('close', () => {
         setConnectionStatus('disconnected')
+        mqttClient.end(true)
+        setClient(null)
+        clientValid.current = false
       })
       // write cube state or app state to the store
       mqttClient.on('message', (topic, message) => {

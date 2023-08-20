@@ -3,7 +3,7 @@ import { create } from 'zustand'
 /**
  * CubeState
  */
-type CubeState = {
+export type CubeState = {
   timestamp: string
   meta: {
     version: string
@@ -40,7 +40,7 @@ enum AppCategory {
   ADMIN = 'ADMIN'
 }
 
-type CubeApp = {
+export type CubeApp = {
   timestamp: Date
   meta: {
     version: string
@@ -66,6 +66,7 @@ type StateStore = {
   cubeState: CubeState[]
   addCubeState: (cubeState: CubeState) => void
   updateCubeState: (cubeState: CubeState) => void
+  removeCubeState: (id: string) => void
   findCubeState: (id: string) => CubeState | undefined
   existsCubeState: (id: string) => boolean
   cubeApp: CubeApp | null
@@ -75,12 +76,13 @@ type StateStore = {
 /**
  * useStateStore
  */
-const useStateStore = create<StateStore>((set, get) => ({
+export const useStateStore = create<StateStore>((set, get) => ({
   cubeState: [],
   cubeApp: null,
   addCubeState: (cubeState) => set((state) => ({ cubeState: [...state.cubeState, cubeState] })),
   updateCubeState: (cubeState) =>
     set((state) => ({ cubeState: state.cubeState.map((state) => (state.id === cubeState.id ? cubeState : state)) })),
+  removeCubeState: (cubeId) => set((state) => ({ cubeState: state.cubeState.filter((state) => state.id !== cubeId) })),
   findCubeState: (cubeId) => {
     const { cubeState } = get()
     return cubeState.find((state) => state.id === cubeId)
@@ -91,5 +93,3 @@ const useStateStore = create<StateStore>((set, get) => ({
   },
   setCubeApp: (cubeApp) => set(() => ({ cubeApp }))
 }))
-
-export default useStateStore
