@@ -8,7 +8,7 @@ type ConnectorProps = {
   options?: mqtt.IClientOptions
 }
 
-const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: ConnectorProps) => {
+export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: ConnectorProps) => {
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
   const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useStateStore()
@@ -82,5 +82,3 @@ const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: Conn
 
   return null
 }
-
-export default Connector
