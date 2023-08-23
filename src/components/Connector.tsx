@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as mqtt from 'mqtt'
-import { useMqttStore, useStateStore } from '../stores'
+import { useMqttStore, useCubeStateStore } from '../stores'
 import { useInterval } from 'usehooks-ts'
 
 type ConnectorProps = {
@@ -11,7 +11,7 @@ type ConnectorProps = {
 export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: ConnectorProps) => {
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
-  const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useStateStore()
+  const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useCubeStateStore()
 
   // TODO: THAT IS POSSILBY NOT IMPLEMENTED ON SERVER SIDE ( WE NEED TIMESTAMP ON SERVER SIDE )
   useInterval(() => {
