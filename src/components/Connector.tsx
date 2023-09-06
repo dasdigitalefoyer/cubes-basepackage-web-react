@@ -13,10 +13,11 @@ export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} 
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
   const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useCubeStateStore()
 
-  // TODO: THAT IS POSSILBY NOT IMPLEMENTED ON SERVER SIDE ( WE NEED TIMESTAMP ON SERVER SIDE )
+  //TODO: THAT IS POSSILBY NOT IMPLEMENTED ON SERVER SIDE ( WE NEED TIMESTAMP ON SERVER SIDE )
   useInterval(() => {
     cubeState.forEach((cube) => {
-      if (cube.timestamp < new Date(Date.now() - 10000).toISOString()) {
+      var t = Date.parse(cube.timestamp)
+      if (t < Date.now() - 60000) {
         removeCubeState(cube.id)
       }
     })
