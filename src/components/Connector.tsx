@@ -3,26 +3,46 @@ import * as mqtt from 'mqtt'
 import { useMqttStore, useCubeStateStore } from '../stores'
 import { useInterval } from 'usehooks-ts'
 
-type ConnectorProps = {
+// This component is responsible for connecting to the MQTT broker and
+// writing the state of the cubes to the store.
+// It also subscribes to the app state topic and writes that to the store
+// as well.
+
+/**
+ * ConnectorProps
+ *
+ * @param brokerUrl The URL of the MQTT broker
+ * @param options The options to pass to the MQTT client
+ * @returns
+ */
+interface ConnectorProps {
   brokerUrl?: string
   options?: mqtt.IClientOptions
 }
 
+/**
+ * Connector component
+ *
+ * @param ConnectorProps The props for the component
+ * @returns
+ */
 export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} }: ConnectorProps) => {
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
   const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useCubeStateStore()
 
-  //TODO: THAT IS POSSILBY NOT IMPLEMENTED ON SERVER SIDE ( WE NEED TIMESTAMP ON SERVER SIDE )
+  // Remove cubes that have not been updated in 60 seconds
   useInterval(() => {
     cubeState.forEach((cube) => {
-      var t = Date.parse(cube.timestamp)
-      if (t < Date.now() - 60000) {
+      if (Date.parse(cube.timestamp) < Date.now() - 60000) {
         removeCubeState(cube.id)
       }
     })
   }, 1000)
 
+  // Connect to the broker when the component mounts
+  // and subscribe to the cube state topic
+  // and write the state to the mqtt store
   useEffect(() => {
     if (!client && !clientValid.current) {
       clientValid.current = true

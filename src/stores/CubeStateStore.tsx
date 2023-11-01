@@ -1,5 +1,10 @@
 import { create } from 'zustand'
 
+// TODO: Is the cube state
+
+/**
+ * This is the type of the cube state object that is set in the cube state store.
+ */
 export type CubeState = {
   timestamp: string
   meta: {
@@ -29,6 +34,9 @@ export type CubeState = {
   }
 }
 
+/**
+ * This is the type of the cube state store.
+ */
 type CubeStateStore = {
   cubeState: CubeState[]
   addCubeState: (cubeState: CubeState) => void
@@ -38,6 +46,9 @@ type CubeStateStore = {
   existsCubeState: (id: string) => boolean
 }
 
+/**
+ * This is the cube state store.
+ */
 export const useCubeStateStore = create<CubeStateStore>((set, get) => ({
   cubeState: [],
   addCubeState: (cubeState) => set((state) => ({ cubeState: [...state.cubeState, cubeState] })),
