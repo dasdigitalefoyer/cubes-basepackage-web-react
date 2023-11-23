@@ -20,16 +20,20 @@ type MqttStore = {
   setClient: (client: mqtt.MqttClient | null) => void
   setConnectionStatus: (status: string) => void
   setError: (error: Error | null) => void
+  publish: (topic: string, message: string) => void
 }
 
 /**
  * This is the mqtt store.
  */
-export const useMqttStore = create<MqttStore>((set) => ({
+export const useMqttStore = create<MqttStore>((set, get) => ({
   client: null,
   connectionStatus: 'offline',
   error: null,
   setClient: (client) => set(() => ({ client })),
   setConnectionStatus: (connectionStatus) => set(() => ({ connectionStatus })),
-  setError: (error) => set(() => ({ error }))
+  setError: (error) => set(() => ({ error })),
+  publish: (topic, message) => {
+    get().client?.publish(topic, message)
+  }
 }))
