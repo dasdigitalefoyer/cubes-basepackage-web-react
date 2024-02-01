@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import * as mqtt from 'mqtt'
 import { useMqttStore, useCubeStateStore } from '../stores'
 import { useInterval } from 'usehooks-ts'
+import { useNeighbourhoodStore } from '../stores/NeighbourhoodStore'
 
 // This component is responsible for connecting to the MQTT broker and
 // writing the state of the cubes to the store.
@@ -30,7 +31,9 @@ export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} 
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
   const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useCubeStateStore()
-
+  
+  const {connectionTopic, connectionPairSubject } = useNeighbourhoodStore()
+  
   // Remove cubes that have not been updated in 60 seconds
   useInterval(() => {
     cubeState.forEach((cube) => {
@@ -54,6 +57,7 @@ export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} 
       mqttClient.on('connect', () => {
         setConnectionStatus('connected')
         mqttClient.subscribe('puzzleCubes/+/state')
+        mqttClient.subscribe(connectionTopic)
       })
       mqttClient.on('reconnect', () => {
         setConnectionStatus('reconnecting')
@@ -84,6 +88,10 @@ export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} 
           } else {
             addCubeState(state)
           }
+        }
+        if (topic === connectionTopic) {
+          console.log('got nh connection')
+          connectionPairSubject.next(state)
         }
       })
     }
