@@ -1,0 +1,79 @@
+// PUZZLECUBES MQTT API
+
+@broker=localhost:1883
+@cubeId=cube02
+
+////////////////////////////////////////////////////////////////////
+### CUBE STATE - hardware and backend state
+////////////////////////////////////////////////////////////////////
+MQTT tcp://{{broker}}
+Topic: puzzleCubes/{{cubeId}}/state
+username: miniwelt
+password: pastelquail546
+
+{
+  "timestamp": "2023-03-22T10:47:08.867081",
+  "meta": {
+    "version": "0.1"
+  },
+  "id": "{{cubeId}}",
+  "state": "active",
+  "system": {
+    "ip": "172.16.10.10",
+    "mac": "XX-XX-XX-XX-XX-XX",
+    "hostname": ""
+  },
+  "cubeControl": {
+    "timestamp": "2023-03-22T10:47:08.867081",
+    "meta": {
+      "version": "0.1"
+    },
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "orientation": 0,
+    "velocity": {
+      "x": 0,
+      "y": 0
+    }
+  }
+}
+
+
+
+////////////////////////////////////////////////////////////////////
+### CUBE APP - 
+////////////////////////////////////////////////////////////////////
+
+MQTT tcp://{{broker}}
+Topic: puzzleCubes/server/apps
+
+[
+    {
+        "id": "performanceBot",
+        "category": "USER",
+        "name": "Performance Bot",
+        "description": "This is the Performance Bot",
+        "version": "0.0.1",
+        "webResourcePath" : "/clientApp/performancebot_Data/StreamingAssets",
+        "webRoot" : "/server",
+        "clientAppRoot" : "/clientApp",
+        "clientAppType" : "EXECUTABLE",
+        "miscData" : {
+            "executable" : "performancebot.x86_64"
+        }
+    },
+    
+    {
+        "id": "TestApp",
+        "category": "USER",
+        "name": "TestApp",
+        "description": "This is a test Application",
+        "version": "0.0.1",
+        "webResourcePath" : "/res",
+        "webRoot" : "/webFrontend",
+        "clientAppRoot" : "/clientApp",
+        "clientAppType" : "WEB"
+    }
+]

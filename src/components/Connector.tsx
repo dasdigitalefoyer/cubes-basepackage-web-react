@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import * as mqtt from 'mqtt'
+import mqtt from 'mqtt'
 import { useMqttStore, useCubeStateStore } from '../stores'
 import { useInterval } from 'usehooks-ts'
 import { useNeighbourhoodStore } from '../stores/NeighbourhoodStore'
@@ -31,9 +31,9 @@ export const Connector = ({ brokerUrl = 'ws://192.168.111.1:9001', options = {} 
   const clientValid = useRef(false)
   const { client, setClient, setConnectionStatus, setError } = useMqttStore()
   const { cubeState, addCubeState, updateCubeState, removeCubeState, existsCubeState } = useCubeStateStore()
-  
-  const {connectionTopic, connectionPairSubject } = useNeighbourhoodStore()
-  
+
+  const { connectionTopic, connectionPairSubject } = useNeighbourhoodStore()
+
   // Remove cubes that have not been updated in 60 seconds
   useInterval(() => {
     cubeState.forEach((cube) => {
